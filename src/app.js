@@ -23,6 +23,10 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.get("/", (req, res) => {
+  res.send("Welcome to Shop Braze dashboard Backend");
+});
+
 //routes import
 import catalogueRouter from "./routes/catalogue/catalogue.route.js";
 import collectionRouter from "./routes/collection/collection.route.js";
