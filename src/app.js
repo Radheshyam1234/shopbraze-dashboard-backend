@@ -9,12 +9,14 @@ const app = express();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "http://yourfrontenddomain.com"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: ["http://localhost:3000", "http://yourfrontenddomain.com"],
+//     credentials: true,
+//   })
+// );
+
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
