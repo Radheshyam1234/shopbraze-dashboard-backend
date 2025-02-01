@@ -40,12 +40,13 @@ export const uploadToS3 = async ({ file, key }) => {
 
 export const deleteFromS3 = async (imageUrl) => {
   try {
-    if (!imageUrl) {
-      throw new Error("Invalid image URL");
+    console.log(typeof imageUrl);
+    if (typeof imageUrl !== "string" || !imageUrl) {
+      throw new Error("Invalid image URL: must be a non-empty string");
     }
-    const key = imageUrl.split(
+    const key = imageUrl?.split(
       `${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`
-    )[1];
+    )?.[1];
 
     if (!key) {
       throw new Error("No valid key extracted from the image URL");

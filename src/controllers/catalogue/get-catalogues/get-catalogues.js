@@ -3,7 +3,7 @@ import { Catalogue } from "../../../models/catalogue/catalogue.model.js";
 const getCatalogues = async (req, res) => {
   try {
     const catalogues = await Catalogue.find({ seller: req.seller._id }).sort({
-      createdAt: -1,
+      updatedAt: -1,
     });
     res.status(200).json({ data: catalogues });
   } catch (error) {
