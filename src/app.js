@@ -11,8 +11,7 @@ const upload = multer({ storage });
 
 app.use(
   cors({
-    // origin: `${process.env.CORS_ORIGIN}`,
-    cors: "*",
+    origin: ["http://localhost:3000", "http://yourfrontenddomain.com"],
     credentials: true,
   })
 );
