@@ -69,3 +69,25 @@ export const deleteFromS3 = async (imageUrl) => {
     return { success: false, message: "Error deleting image", error };
   }
 };
+
+export const uploadCsvToS3 = async ({ file, key }) => {
+  const params = {
+    Bucket: BUCKET_NAME,
+    Key: key,
+    Body: Buffer.from(file),
+    ContentType: "text/csv",
+    ContentLength: Buffer.byteLength(file),
+  };
+
+  const command = new PutObjectCommand(params);
+
+  try {
+    const uploadedResponse = await s3.send(command);
+    return {
+      url: `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`,
+    };
+  } catch (error) {
+    console.error(error);
+    throw new Error({ error });
+  }
+};

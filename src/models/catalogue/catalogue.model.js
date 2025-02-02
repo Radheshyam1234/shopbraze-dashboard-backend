@@ -80,15 +80,15 @@ const CatalogueSchema = new Schema(
     },
     size_type: {
       type: String,
+      required: true,
     },
     pickup_point: {
       type: String,
+      required: true,
     },
     return_condition: {
       type: String,
-    },
-    return_condition: {
-      type: String,
+      required: true,
     },
     product_code: {
       type: String,
@@ -103,7 +103,6 @@ const CatalogueSchema = new Schema(
     gst_number: {
       type: String,
     },
-
     product_attributes: [
       {
         key: {
@@ -121,6 +120,11 @@ const CatalogueSchema = new Schema(
     media: {
       images: [{ url: { type: String }, index: { type: Number }, _id: false }],
       videos: [{ url: { type: String }, index: { type: Number }, _id: false }],
+    },
+    is_visible: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
     seller: { type: ObjectId, ref: "User" },
   },
