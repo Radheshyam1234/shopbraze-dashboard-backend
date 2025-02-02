@@ -87,7 +87,7 @@ const updateCatalogue = async (req, res) => {
           }),
         },
       },
-      { new: true }
+      { new: true, runValidators: true }
     ).exec();
 
     res.status(200).json({ message: "Updated successfully" });

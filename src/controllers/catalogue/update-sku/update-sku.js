@@ -18,7 +18,8 @@ const updateCatalogueSkuData = async (req, res) => {
         $set: {
           customer_skus: sku_data,
         },
-      }
+      },
+      { runValidators: true }
     );
     res.status(200).json({ message: "Updated successfully" });
   } catch (error) {
