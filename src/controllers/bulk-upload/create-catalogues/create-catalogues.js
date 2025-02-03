@@ -11,9 +11,9 @@ const uploadImagesToS3AndUpdateDB = async (products, req) => {
 
     for (const image of product.media.images) {
       try {
-        const key = `${req.seller._id}/product-images/${
-          product.short_id
-        }${nanoid(10)}`;
+        const key = `${req.seller._id}/product-images/${product.title}-${
+          product.product_short_id
+        }-${nanoid(10)}`;
         const uploadResult = await uploadUrlToS3({ fileUrl: image.url, key });
         updatedImages.push({ url: uploadResult.url, index: image.index });
       } catch (error) {
