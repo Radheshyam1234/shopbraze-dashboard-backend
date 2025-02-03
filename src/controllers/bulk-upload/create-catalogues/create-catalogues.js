@@ -1,9 +1,32 @@
 import csvtojson from "csvtojson";
 import { nanoid } from "nanoid";
-import { uploadCsvToS3, uploadToS3 } from "../../../s3/s3.js";
+import { uploadCsvToS3, uploadToS3, uploadUrlToS3 } from "../../../s3/s3.js";
 import { json2csv } from "json-2-csv";
 import { Catalogue } from "../../../models/catalogue/catalogue.model.js";
 import { generateShortId } from "../../../utils/generate-short-id.js";
+
+const uploadImagesToS3AndUpdateDB = async (products, req) => {
+  for (const product of products) {
+    let updatedImages = [];
+
+    for (const image of product.media.images) {
+      try {
+        const key = `${req.seller._id}/product-images/${
+          product.short_id
+        }${nanoid(10)}`;
+        const uploadResult = await uploadUrlToS3({ fileUrl: image.url, key });
+        updatedImages.push({ url: uploadResult.url, index: image.index });
+      } catch (error) {
+        console.error(`Failed to upload image: ${image.url}`, error);
+        updatedImages.push(image);
+      }
+    }
+    await Catalogue.updateOne(
+      { _id: product._id },
+      { $set: { "media.images": updatedImages } }
+    );
+  }
+};
 
 const createCataloguesInBulk = async (req, res) => {
   try {
@@ -141,6 +164,16 @@ const createCataloguesInBulk = async (req, res) => {
         item["Visibility"].trim().toUpperCase() === "TRUE";
 
       if (!groupedProducts[productCode]) {
+        // Check for required fields at catalogue level during assigning new product
+        if (!item["Name"]?.trim())
+          validationErrors.push("Product title is required");
+        if (!item["Pickup Point"]?.trim())
+          validationErrors.push("Pickup Point is required");
+        if (!item["Return/Exchange Condition"]?.trim())
+          validationErrors.push("Return Condition is required");
+        if (!item["Size Type"]?.trim())
+          validationErrors.push("Size Type is required");
+
         groupedProducts[productCode] = {
           product_code: productCode,
           product_short_id: generateShortId(8),
@@ -184,7 +217,7 @@ const createCataloguesInBulk = async (req, res) => {
           seller: req.seller._id,
         };
       } else {
-        // Update catalogue-level fields with values from the current row if they exist
+        // Update catalogue-level fields with values from the current row if they exist (and they were not in first row of new product (not required for mandatory fields bcz they are handled above--it should be in first row))
         groupedProducts[productCode].title =
           groupedProducts[productCode].title || item["Name"].trim();
         groupedProducts[productCode].description =
@@ -230,7 +263,8 @@ const createCataloguesInBulk = async (req, res) => {
     }
 
     const productsToInsert = Object.values(groupedProducts);
-    await Catalogue.insertMany(productsToInsert);
+    const insertedData = await Catalogue.insertMany(productsToInsert);
+    await uploadImagesToS3AndUpdateDB(insertedData, req);
 
     let productsForSuccessCsv = Object.values(groupedProducts).map(
       (product) => ({
@@ -250,9 +284,13 @@ const createCataloguesInBulk = async (req, res) => {
       key: successKey,
     });
 
+    const updatedProducts = await Catalogue.find({
+      _id: { $in: insertedData.map((p) => p._id) },
+    });
+
     return res.status(200).json({
       message: "CSV processed successfully",
-      data: groupedProducts,
+      data: updatedProducts,
       fileUrl: url,
     });
   } catch (error) {
