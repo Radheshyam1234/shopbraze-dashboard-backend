@@ -3,7 +3,9 @@ import { nanoid } from "nanoid";
 import { uploadCsvToS3, uploadToS3, uploadUrlToS3 } from "../../../s3/s3.js";
 import { json2csv } from "json-2-csv";
 import { Catalogue } from "../../../models/catalogue/catalogue.model.js";
+import { BulkUploadReport } from "../../../models/reports/reports.model.js";
 import { generateShortId } from "../../../utils/generate-short-id.js";
+import moment from "moment";
 
 const uploadImagesToS3AndUpdateDB = async (products, req) => {
   for (const product of products) {
@@ -36,6 +38,19 @@ const createCataloguesInBulk = async (req, res) => {
 
     const csvString = req?.file?.buffer?.toString("utf-8");
     const jsonArray = await csvtojson().fromString(csvString);
+
+    // Details of user-uploaded csv
+    const uploaded_time_by_user = moment(new Date()).format(
+      "Do MMMM YYYY, h:mm:ss a"
+    );
+    const user_uploaded_csv = json2csv(jsonArray);
+    const originalFileName = req.file.originalname.split(".")[0];
+    const { url: uploaded_file_url } = await uploadCsvToS3({
+      file: user_uploaded_csv,
+      key: `${req.seller._id}/reports/${originalFileName}_user-upload_${nanoid(
+        10
+      )}.csv`,
+    });
 
     let groupedProducts = {};
     let errors = [];
@@ -245,20 +260,31 @@ const createCataloguesInBulk = async (req, res) => {
 
     if (errors.length > 0) {
       const errorCsv = json2csv(jsonArray);
-      const originalFileName = req.file.originalname?.split(".")?.[0];
       const errorKey = `${
         req.seller._id
       }/reports/${originalFileName}_error_${nanoid(10)}.csv`;
 
-      const { url } = await uploadCsvToS3({
+      const { url: errorReportUrl } = await uploadCsvToS3({
         file: errorCsv,
         key: errorKey,
       });
 
+      // Add report to database
+      await BulkUploadReport.create({
+        file_name: `${originalFileName}-${new Date().getMilliseconds}.csv`,
+        report_url: errorReportUrl,
+        uploaded_file_url: uploaded_file_url,
+        user_type: "Seller",
+        uploaded_status: "Failed",
+        upload_type: "New Catalogue",
+        uploaded_time: uploaded_time_by_user,
+        uploaded_completed_time: "",
+        total_row: jsonArray.length,
+        seller: req.seller._id,
+      });
+
       return res.status(400).json({
         message: "Validation errors found",
-        errors,
-        fileUrl: url,
       });
     }
 
@@ -274,24 +300,37 @@ const createCataloguesInBulk = async (req, res) => {
     );
 
     const successCsv = json2csv(productsForSuccessCsv);
-    const originalFileName = req.file.originalname.split(".")[0];
     const successKey = `${
       req.seller._id
     }/reports/${originalFileName}_success_${nanoid(10)}.csv`;
 
-    const { url } = await uploadCsvToS3({
+    const { url: successReportUrl } = await uploadCsvToS3({
       file: successCsv,
       key: successKey,
     });
 
-    const updatedProducts = await Catalogue.find({
+    await Catalogue.find({
       _id: { $in: insertedData.map((p) => p._id) },
+    });
+
+    // Add report to database
+    await BulkUploadReport.create({
+      file_name: `${originalFileName}-${new Date().getMilliseconds()}.csv`,
+      report_url: successReportUrl,
+      uploaded_file_url: uploaded_file_url,
+      user_type: "Seller",
+      uploaded_status: "Completed",
+      upload_type: "New Catalogue",
+      uploaded_time: uploaded_time_by_user,
+      uploaded_completed_time: moment(new Date()).format(
+        "Do MMMM YYYY, h:mm:ss a"
+      ),
+      total_row: jsonArray.length,
+      seller: req.seller._id,
     });
 
     return res.status(200).json({
       message: "CSV processed successfully",
-      data: updatedProducts,
-      fileUrl: url,
     });
   } catch (error) {
     console.log(error);

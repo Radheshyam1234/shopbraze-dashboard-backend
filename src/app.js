@@ -33,6 +33,7 @@ import catalogueRouter from "./routes/catalogue/catalogue.route.js";
 import collectionRouter from "./routes/collection/collection.route.js";
 import sellerRouter from "./routes/user/seller.route.js";
 import bulkUploadRouter from "./routes/bulk-upload/bulk-upload.js";
+import reportsRouter from "./routes/reports/reports.route.js";
 
 // Forcefully trying to ensure Indexing creation
 // Catalogue.ensureIndexes().then(() => {
@@ -51,5 +52,6 @@ app.use(
 app.use("/api/collections", collectionRouter);
 app.use("/api/user/sellers", sellerRouter);
 app.use("/api/bulk-upload", upload.single("file"), bulkUploadRouter);
+app.use("/api/reports", reportsRouter);
 
 export { app };
