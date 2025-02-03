@@ -271,7 +271,7 @@ const createCataloguesInBulk = async (req, res) => {
 
       // Add report to database
       await BulkUploadReport.create({
-        file_name: `${originalFileName}-${new Date().getMilliseconds}.csv`,
+        file_name: `${originalFileName}-${new Date().getMilliseconds()}.csv`,
         report_url: errorReportUrl,
         uploaded_file_url: uploaded_file_url,
         user_type: "Seller",
