@@ -20,7 +20,7 @@ const getCatalogues = async (req, res) => {
         catalogues,
         currentPage: page,
         totalPages: Math.ceil(totalDocuments / limit),
-        // totalItems: totalDocuments,
+        totalItems: totalDocuments,
       },
     });
   } catch (error) {
