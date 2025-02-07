@@ -101,14 +101,14 @@ const createCataloguesInBulk = async (req, res) => {
       }
 
       // Convert values to correct types
-      let costPrice = parseFloat(item["Cost Price"]);
-      let sellingPrice = parseFloat(item["Selling Price"]);
-      let mrp = parseFloat(item["MRP"]);
-      let quantity = parseInt(item["Quantity"]);
-      let weight = parseFloat(item["Packaging Weight (in kg)"]);
-      let length = parseFloat(item["Packaging Length (in cm)"]);
-      let breadth = parseFloat(item["Packaging Breadth (in cm)"]);
-      let height = parseFloat(item["Packaging Height (in cm)"]);
+      let costPrice = parseFloat(item["Cost Price"] || 0);
+      let sellingPrice = parseFloat(item["Selling Price"] || 0);
+      let mrp = parseFloat(item["MRP"] || 0);
+      let quantity = parseInt(item["Quantity"] || 0);
+      let weight = parseFloat(item["Packaging Weight (in kg)"] || 0);
+      let length = parseFloat(item["Packaging Length (in cm)"] || 0);
+      let breadth = parseFloat(item["Packaging Breadth (in cm)"] || 0);
+      let height = parseFloat(item["Packaging Height (in cm)"] || 0);
 
       // Field Validations
       if (costPrice >= sellingPrice)
@@ -290,7 +290,7 @@ const createCataloguesInBulk = async (req, res) => {
 
     const productsToInsert = Object.values(groupedProducts);
     const insertedData = await Catalogue.insertMany(productsToInsert);
-    await uploadImagesToS3AndUpdateDB(insertedData, req);
+    // await uploadImagesToS3AndUpdateDB(insertedData, req);
 
     let productsForSuccessCsv = Object.values(groupedProducts).map(
       (product) => ({

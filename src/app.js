@@ -29,7 +29,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const server = app.get("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Welcome to Shop Braze dashboard Backend");
 });
 
@@ -58,7 +58,5 @@ app.use("/api/collections", collectionRouter);
 app.use("/api/user/sellers", sellerRouter);
 app.use("/api/bulk-upload", upload.single("file"), bulkUploadRouter);
 app.use("/api/reports", reportsRouter);
-
-server.timeout = 300000;
 
 export { app };
