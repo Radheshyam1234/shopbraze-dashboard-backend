@@ -1,9 +1,10 @@
 import { Router } from "express";
+
+import verifyJWT from "../../middlewares/verify-jwt.js";
 import {
   createCollection,
   getCollections,
-} from "../../controllers/collection/collection.controller.js";
-import verifyJWT from "../../middlewares/verify-jwt.js";
+} from "../../controllers/collection/index.js";
 
 const router = Router();
 

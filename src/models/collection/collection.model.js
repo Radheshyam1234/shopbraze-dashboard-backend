@@ -10,18 +10,22 @@ const CollectionSchema = new Schema(
     short_id: {
       type: String,
       required: true,
+      unique: true,
     },
     type: {
       type: String,
       required: true,
+      enum: ["bulk_upload", "catalogues_selection"],
     },
-    active: {
+    is_active: {
       type: Boolean,
+      default: true,
     },
-    visible: {
+    is_visible: {
       type: Boolean,
+      default: true,
     },
-    seller: { type: Object, ref: "User" },
+    seller: { type: ObjectId, ref: "User" },
   },
   {
     timestamps: true,

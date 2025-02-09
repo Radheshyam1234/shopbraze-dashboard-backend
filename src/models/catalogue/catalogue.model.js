@@ -133,27 +133,8 @@ const CatalogueSchema = new Schema(
   }
 );
 
-// For compound Indexing
-// CatalogueSchema.index(
-//   {
-//     product_code: 1,
-//     "customer_skus.short_id": 1,
-//     product_short_id: 1,
-//     "customer_skus.sku_id": 1,
-//   },
-//   { unique: true, collation: { locale: "en", strength: 2 } }
-// );
+CatalogueSchema.index({
+  collections_to_add: 1,
+});
 
 export const Catalogue = mongoose.model("Catalogue", CatalogueSchema);
-
-// CatalogueSchema.pre('save', function(next) {
-//   const skuIds = this.customer_skus.map(sku => sku.sku_id);
-//   const hasDuplicate = skuIds.length !== new Set(skuIds).size;
-
-//   if (hasDuplicate) {
-//     const error = new Error('sku_id must be unique within the customer_skus array');
-//     return next(error);
-//   }
-
-//   next();
-// });
