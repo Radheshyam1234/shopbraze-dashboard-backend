@@ -13,8 +13,6 @@ const deleteCollection = async (req, res) => {
       collections_to_add: collection.short_id,
     });
 
-    console.log(catalogues_to_remove_collection);
-
     if (catalogues_to_remove_collection?.length > 0) {
       const bulkOps = catalogues_to_remove_collection?.map((catalogue) => ({
         updateOne: {
