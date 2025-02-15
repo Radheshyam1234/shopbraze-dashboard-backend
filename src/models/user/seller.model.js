@@ -17,10 +17,17 @@ const SellerSchema = new Schema(
     contact_number: {
       type: String,
       required: true,
+      unique: true,
     },
     email: {
       type: String,
       required: true,
+    },
+    custom_domain: {
+      type: String,
+    },
+    preferred_web_prefix: {
+      type: String,
     },
   },
   {
