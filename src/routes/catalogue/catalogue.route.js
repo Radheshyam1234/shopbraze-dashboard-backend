@@ -7,11 +7,11 @@ import {
   updateCatalogue,
   updateCatalogueSkuData,
 } from "../../controllers/catalogue/index.js";
-import verifyJWT from "../../middlewares/verify-jwt.js";
+import { verifyAuth } from "../../middlewares/verify-auth.js";
 
 const router = Router();
 
-router.use(verifyJWT);
+router.use(verifyAuth);
 
 router.route("/").post(createCatalogue).get(getCatalogues);
 

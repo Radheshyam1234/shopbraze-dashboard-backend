@@ -2,17 +2,27 @@ import mongoose, { Schema } from "mongoose";
 
 const AdminSchema = new Schema(
   {
-    name: {
+    first_name: {
       type: String,
       required: true,
+    },
+    last_name: {
+      type: String,
+      required: false,
     },
     contact_number: {
       type: String,
       required: true,
+      unique: true,
     },
     email: {
       type: String,
       required: true,
+    },
+    type: {
+      type: String,
+      default: "system",
+      immutable: true,
     },
   },
   {

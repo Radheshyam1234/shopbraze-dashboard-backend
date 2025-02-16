@@ -1,6 +1,5 @@
 import { Router } from "express";
-
-import verifyJWT from "../../middlewares/verify-jwt.js";
+import { verifyAuth } from "../../middlewares/verify-auth.js";
 import {
   getThemeConstants,
   getThemeSettings,
@@ -12,7 +11,7 @@ import {
 
 const router = Router();
 
-router.use(verifyJWT);
+router.use(verifyAuth);
 
 router.route("/theme-constants").get(getThemeConstants);
 router.route("/theme-settings").get(getThemeSettings).put(updateThemeSettings);

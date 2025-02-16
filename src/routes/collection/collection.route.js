@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import verifyJWT from "../../middlewares/verify-jwt.js";
+import { verifyAuth } from "../../middlewares/verify-auth.js";
 import {
   createCollection,
   deleteCollection,
@@ -12,7 +12,7 @@ import { getCollectionById } from "../../controllers/collection/get-collections/
 
 const router = Router();
 
-router.use(verifyJWT);
+router.use(verifyAuth);
 
 router.route("/").post(createCollection).get(getCollections);
 

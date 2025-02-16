@@ -29,6 +29,11 @@ const SellerSchema = new Schema(
     preferred_web_prefix: {
       type: String,
     },
+    type: {
+      type: String,
+      default: "seller",
+      immutable: true,
+    },
   },
   {
     timestamps: true,

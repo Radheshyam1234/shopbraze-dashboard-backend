@@ -1,5 +1,5 @@
 import { Router } from "express";
-import verifyJWT from "../../middlewares/verify-jwt.js";
+import { verifyAuth } from "../../middlewares/verify-auth.js";
 import {
   createCataloguesInBulk,
   createCollectionsInBulk,
@@ -7,7 +7,7 @@ import {
 
 const router = Router();
 
-router.use(verifyJWT);
+router.use(verifyAuth);
 
 router.route("/catalogues").post(createCataloguesInBulk);
 router.route("/collections").post(createCollectionsInBulk);
