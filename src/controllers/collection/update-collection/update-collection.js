@@ -1,3 +1,4 @@
+import { Catalogue } from "../../../models/catalogue/catalogue.model.js";
 import { Collection } from "../../../models/collection/collection.model.js";
 
 const toggleCollectionVisibility = async (req, res) => {
@@ -20,7 +21,7 @@ const toggleCollectionVisibility = async (req, res) => {
 const updateCollectionDetails = async (req, res) => {
   try {
     const { collectionId } = req.params;
-    const newData = req?.body;
+    const { product_short_ids, ...newData } = req?.body;
 
     const existingCollection = await Collection.findOne({
       _id: collectionId,
@@ -28,13 +29,38 @@ const updateCollectionDetails = async (req, res) => {
     if (!existingCollection) {
       return res.status(404).json({ error: "Collection not found" });
     }
-    const updatedData = { ...existingCollection.toObject(), ...newData };
 
     await Collection.updateOne(
       { _id: collectionId },
-      { $set: updatedData },
+      { $set: newData },
       { runValidators: true }
     );
+
+    const collectionShortId = existingCollection.short_id;
+
+    if (product_short_ids?.length) {
+      await Catalogue.bulkWrite([
+        // ✅ Remove collectionShortId from all catalogues that are NOT in product_short_ids
+        {
+          updateMany: {
+            filter: {
+              collections_to_add: collectionShortId,
+              product_short_id: { $nin: product_short_ids },
+            },
+            update: { $pull: { collections_to_add: collectionShortId } },
+          },
+        },
+        // ✅ Add collectionShortId to catalogues that should have it
+        {
+          updateMany: {
+            filter: {
+              product_short_id: { $in: product_short_ids },
+            },
+            update: { $addToSet: { collections_to_add: collectionShortId } }, // Prevents duplicates
+          },
+        },
+      ]);
+    }
 
     res.status(200).json({ message: "Updated successfully" });
   } catch (error) {
