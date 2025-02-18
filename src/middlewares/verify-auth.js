@@ -36,28 +36,30 @@ const verifyAuth = async (req, res, next) => {
     }
 
     // ✅ Attach user to request object based on type (admin or seller)
-    if (sessionData?.user?.type === "admin") {
+    if (sessionData?.user?.type === "system") {
       const admin = await Admin.findOne({
         contact_number: sessionData.user.contact_number,
       });
-      req.admin_hai = admin;
+      req.user_type = "system";
+      req.admin = admin;
     } else if (sessionData?.user?.type === "seller") {
       const seller = await Seller.findOne({
         contact_number: sessionData.user.contact_number,
       });
-      req.seller_hai = seller;
+      req.user_type = "seller";
+      req.seller = seller;
     }
 
     // If user is neither an admin nor a seller, deny access
-    if (!req.admin_hai && !req.seller_hai) {
+    if (!req.admin && !req.seller) {
       return res.status(401).json({ message: "User not found" });
     }
 
-    Seller.findById("67985a83c0d392e80ef08513").then((seller) => {
-      req.seller = seller;
-      next();
-    });
-    //  next();
+    // Seller.findById("67985a83c0d392e80ef08513").then((seller) => {
+    //   req.seller = seller;
+    //   next();
+    // });
+    next();
   } catch (error) {
     return res
       .status(500)
