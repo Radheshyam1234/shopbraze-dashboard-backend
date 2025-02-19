@@ -13,6 +13,7 @@ const corsMiddleware = cors({
     }
   },
   credentials: true,
+  exposedHeaders: ["set-cookie"],
 });
 
 export { corsMiddleware };

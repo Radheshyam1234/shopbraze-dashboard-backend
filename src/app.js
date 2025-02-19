@@ -11,7 +11,10 @@ import { corsMiddleware } from "./middlewares/cors-middleware.js";
 import multer, { memoryStorage } from "multer";
 
 const app = express();
+
 app.disable("x-powered-by");
+app.set("trust proxy", true);
+
 app.use((req, res, next) => {
   res.setHeader(
     "Cache-Control",
