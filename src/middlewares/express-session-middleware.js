@@ -19,8 +19,14 @@ const sessionMiddleware = session({
   store: sessionStore,
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "Strict",
+    // secure: process.env.NODE_ENV === "production" ? true : false,
+    // sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
+
+    secure: true,
+    sameSite: "none",
+
+    // secure: process.env.NODE_ENV === "production",
+    // sameSite: "Strict",
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   },
   genid: function () {
