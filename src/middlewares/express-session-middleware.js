@@ -23,7 +23,7 @@ const sessionMiddleware = session({
     // sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
 
     secure: true,
-    sameSite: "none",
+    sameSite: "None",
 
     // secure: process.env.NODE_ENV === "production",
     // sameSite: "Strict",
