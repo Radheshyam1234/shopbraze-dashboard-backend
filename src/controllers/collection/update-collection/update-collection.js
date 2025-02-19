@@ -40,7 +40,7 @@ const updateCollectionDetails = async (req, res) => {
 
     if (product_short_ids?.length) {
       await Catalogue.bulkWrite([
-        // ✅ Remove collectionShortId from all catalogues that are NOT in product_short_ids
+        // Remove collectionShortId from all catalogues that are NOT in product_short_ids
         {
           updateMany: {
             filter: {
@@ -50,7 +50,7 @@ const updateCollectionDetails = async (req, res) => {
             update: { $pull: { collections_to_add: collectionShortId } },
           },
         },
-        // ✅ Add collectionShortId to catalogues that should have it
+        // Add collectionShortId to catalogues that should have it
         {
           updateMany: {
             filter: {
