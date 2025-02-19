@@ -35,6 +35,9 @@ const verifyAuth = async (req, res, next) => {
       return res.status(401).json({ message: "Session hijacking detected" });
     }
 
+    // If Admin is trying to get data on behalf of seller
+    const viewAsSellerId = req.headers["x-view-as"];
+
     // ✅ Attach user to request object based on type (admin or seller)
     if (sessionData?.user?.type === "system") {
       const admin = await Admin.findOne({
@@ -42,6 +45,14 @@ const verifyAuth = async (req, res, next) => {
       });
       req.user_type = "system";
       req.admin = admin;
+
+      if (viewAsSellerId) {
+        const seller = await Seller.findOne({
+          _id: viewAsSellerId,
+        });
+        req.seller = seller;
+        console.log({ seller });
+      }
     } else if (sessionData?.user?.type === "seller") {
       const seller = await Seller.findOne({
         contact_number: sessionData.user.contact_number,
@@ -55,10 +66,6 @@ const verifyAuth = async (req, res, next) => {
       return res.status(401).json({ message: "User not found" });
     }
 
-    // Seller.findById("67985a83c0d392e80ef08513").then((seller) => {
-    //   req.seller = seller;
-    //   next();
-    // });
     next();
   } catch (error) {
     return res

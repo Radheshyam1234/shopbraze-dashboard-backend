@@ -15,10 +15,10 @@ const getUserData = async (req, res) => {
           .json({ message: "Access to login as seller is not allowed" });
 
       seller_data = await Seller.findById(viewAsSellerId).lean();
-      admin_data = await Admin.findOne({
-        contact_number: req.admin.contact_number,
-      }).lean();
-      res.status(200).json({ data: { ...seller_data, admin: admin_data } });
+      // admin_data = await Admin.findOne({
+      //   contact_number: req.admin.contact_number,
+      // }).lean();
+      res.status(200).json({ data: seller_data });
     } else if (req.user_type === "seller") {
       seller_data = await Seller.findOne({
         contact_number: req.seller.contact_number,
