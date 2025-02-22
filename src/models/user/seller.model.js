@@ -11,6 +11,7 @@ const BillingAddressSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    default: "",
   },
   address: {
     type: String,
@@ -41,6 +42,7 @@ const PickupAddressSchema = new mongoose.Schema({
   },
   address: {
     type: String,
+    default: "",
   },
   contact_number: {
     type: String,
@@ -120,6 +122,7 @@ const SellerSchema = new Schema(
     },
     preferred_web_prefix: {
       type: String,
+      default: "",
     },
     email: {
       type: String,
@@ -132,20 +135,25 @@ const SellerSchema = new Schema(
     },
     whatsapp_number: {
       type: String,
+      default: "",
     },
     additional_login_number: {
       type: String,
+      default: "",
     },
     description: {
       type: String,
+      default: "",
     },
     profile_photo: {
       type: String,
+      default: "",
     },
     settings: {
       payment_mode: {
         type: [String],
         enum: ["online", "cod", "partial-cod"],
+        default: ["online"],
       },
     },
 
@@ -159,31 +167,39 @@ const SellerSchema = new Schema(
     },
     return_address: {
       type: ReturnAddressSchema,
+      default: [],
     },
     is_same_return_address: {
       type: Boolean,
+      default: true,
     },
     is_gst: {
       type: Boolean,
+      default: false,
     },
     gst_number: {
       type: String,
+      default: "",
     },
     custom_domain: {
       type: String,
     },
     addr_tag_3pl: {
       type: String,
+      default: "",
     },
     kyc_details: {
       gst: {
         type: String,
+        default: "",
       },
       pan: {
         type: String,
+        default: "",
       },
       cheque: {
         type: String,
+        default: "",
       },
     },
   },
