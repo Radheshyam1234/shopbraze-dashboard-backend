@@ -1,23 +1,56 @@
 import { Seller } from "../../models/user/seller.model.js";
+import { uploadToS3 } from "../../s3/s3.js";
 
 const createSeller = async (req, res) => {
   try {
-    const data = req.body;
+    const sellerDetails = JSON.parse(req.body?.sellerDetails);
+    const gstFile = req.files?.["gst_file"]?.[0];
+    const panFile = req.files?.["pan_file"]?.[0];
+    const chequeFile = req.files?.["cheque_file"]?.[0];
 
     const existingSeller = await Seller.findOne({
-      contact_number: data.contact_number,
+      contact_number: sellerDetails.contact_number,
     });
     if (existingSeller) {
       return res
         .status(400)
         .json({ message: "A seller with this contact number already exists!" });
     }
+    const seller = await Seller.create({
+      ...sellerDetails,
+      addr_tag_3pl: sellerDetails?.billing_address?.addr_tag_3pl,
+    });
 
-    const seller = await Seller.create({ ...data });
-    if (seller)
-      res.status(200).json({ message: "Seller created successfully!" });
+    //  Uploading of KYC Details (if Any)
+
+    const kycFiles = [
+      { file: gstFile, keyName: "gst" },
+      { file: panFile, keyName: "pan" },
+      { file: chequeFile, keyName: "cheque" },
+    ];
+    const kycDetails = {}; // Store uploaded URLs for DB update
+
+    for (const { file, keyName } of kycFiles) {
+      if (file) {
+        const { url } = await uploadToS3({
+          file,
+          key: `${seller._id}/seller-details/${keyName}-${Date.now()}-${
+            file.originalname
+          }`,
+        });
+        kycDetails[keyName] = url;
+      }
+    }
+
+    if (Object.keys(kycDetails).length > 0) {
+      await Seller.findByIdAndUpdate(seller._id, {
+        $set: { kyc_details: kycDetails },
+      });
+    }
+    if (seller) res.status(200).json({ seller });
   } catch (error) {
-    res.status(500).json({ error });
+    console.log(error);
+    res.status(500).json({ error: JSON.stringify(error) });
   }
 };
 

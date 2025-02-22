@@ -41,7 +41,6 @@ export const uploadToS3 = async ({ file, key }) => {
 
 export const deleteFromS3 = async (imageUrl) => {
   try {
-    console.log(typeof imageUrl);
     if (typeof imageUrl !== "string" || !imageUrl) {
       throw new Error("Invalid image URL: must be a non-empty string");
     }

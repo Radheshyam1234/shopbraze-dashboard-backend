@@ -47,7 +47,6 @@ app.get("/", (req, res) => {
 import userRouter from "./routes/user/user.route.js";
 import catalogueRouter from "./routes/catalogue/catalogue.route.js";
 import collectionRouter from "./routes/collection/collection.route.js";
-import sellerRouter from "./routes/user/user.route.js";
 import bulkUploadRouter from "./routes/bulk-upload/bulk-upload.js";
 import reportsRouter from "./routes/reports/reports.route.js";
 import websitePageConfigRouter from "./routes/website-page-config/website-page-config.js";
@@ -65,10 +64,11 @@ app.use(
   catalogueRouter
 );
 app.use("/api/collections", collectionRouter);
-app.use("/api/user/sellers", sellerRouter);
 app.use("/api/bulk-upload", upload.single("file"), bulkUploadRouter);
 app.use("/api/reports", reportsRouter);
 app.use("/api/website-page", websitePageConfigRouter);
+
+// For Admin Services
 
 app.use("/api/user/sellers", sellersRouter);
 
