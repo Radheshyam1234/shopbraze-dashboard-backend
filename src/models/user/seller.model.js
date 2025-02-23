@@ -167,7 +167,8 @@ const SellerSchema = new Schema(
     },
     return_address: {
       type: ReturnAddressSchema,
-      default: [],
+      required: false,
+      default: null,
     },
     is_same_return_address: {
       type: Boolean,

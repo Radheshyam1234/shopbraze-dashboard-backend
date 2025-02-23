@@ -3,7 +3,7 @@ import { uploadToS3 } from "../../s3/s3.js";
 
 const createSeller = async (req, res) => {
   try {
-    const sellerDetails = JSON.parse(req.body?.sellerDetails);
+    let sellerDetails = JSON.parse(req.body?.sellerDetails);
     const gstFile = req.files?.["gst_file"]?.[0];
     const panFile = req.files?.["pan_file"]?.[0];
     const chequeFile = req.files?.["cheque_file"]?.[0];
@@ -16,6 +16,17 @@ const createSeller = async (req, res) => {
         .status(400)
         .json({ message: "A seller with this contact number already exists!" });
     }
+
+    // CHeck for return address (Bcz it is optional but its field except email is required)
+    if (
+      sellerDetails?.return_address &&
+      Object.entries(sellerDetails.return_address)
+        .filter(([key]) => key !== "email")
+        .some(([_, value]) => !value)
+    ) {
+      delete sellerDetails.return_address;
+    }
+
     const seller = await Seller.create({
       ...sellerDetails,
       addr_tag_3pl: sellerDetails?.billing_address?.addr_tag_3pl,
@@ -50,7 +61,7 @@ const createSeller = async (req, res) => {
     if (seller) res.status(200).json({ seller });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: JSON.stringify(error) });
+    res.status(500).json({ error: error?.message });
   }
 };
 
