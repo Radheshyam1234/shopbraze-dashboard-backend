@@ -29,8 +29,8 @@ const verifyAuth = async (req, res, next) => {
     const requestUserAgent = req.headers["user-agent"];
 
     if (
-      sessionData?.user?.ip !== requestIP ||
-      sessionData?.user?.userAgent !== requestUserAgent
+      sessionData?.user?.ip !== requestIP
+      // || sessionData?.user?.userAgent !== requestUserAgent
     ) {
       return res.status(401).json({ message: "Session hijacking detected" });
     }

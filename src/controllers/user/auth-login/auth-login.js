@@ -14,7 +14,7 @@ const loginUser = async (req, res) => {
     }
 
     const requestIP = req.ip || req.connection.remoteAddress;
-    const requestUserAgent = req.headers["user-agent"];
+    // const requestUserAgent = req.headers["user-agent"];
 
     req.session.user = {
       contact_number: user_is_admin
@@ -22,7 +22,7 @@ const loginUser = async (req, res) => {
         : user_is_seller.contact_number,
       type: user_is_admin ? "system" : "seller",
       ip: requestIP,
-      userAgent: requestUserAgent,
+      // userAgent: requestUserAgent,
     };
 
     res.status(200).json({ data: user_is_seller || user_is_admin });
