@@ -44,6 +44,8 @@ app.get("/", (req, res) => {
 });
 
 //routes import
+import pincodeRouter from "./routes/pin-code/pin-code.route.js";
+
 import userRouter from "./routes/user/user.route.js";
 import catalogueRouter from "./routes/catalogue/catalogue.route.js";
 import collectionRouter from "./routes/collection/collection.route.js";
@@ -54,6 +56,8 @@ import websitePageConfigRouter from "./routes/website-page-config/website-page-c
 import sellersRouter from "./routes/admin-routes/sellers/sellers.route.js";
 
 //routes declaration
+app.use("/api/pincode", pincodeRouter);
+
 app.use("/api/user", userRouter);
 app.use(
   "/api/catalogues",

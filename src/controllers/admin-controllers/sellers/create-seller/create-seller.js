@@ -13,11 +13,9 @@ const cretateSeller = async (req, res) => {
         .json({ message: "A seller with this contact number already exists!" });
     }
 
-    console.log(data, "create seller");
-
-    // const seller = await Seller.create({ ...data });
-    // if (seller)
-    //   res.status(200).json({ message: "Seller created successfully!" });
+    const seller = await Seller.create({ ...data });
+    if (seller)
+      res.status(200).json({ message: "Seller created successfully!" });
   } catch (error) {
     res.status(500).json({ error: JSON.stringify(error) });
   }
