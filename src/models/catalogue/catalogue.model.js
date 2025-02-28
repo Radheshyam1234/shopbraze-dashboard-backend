@@ -126,7 +126,7 @@ const CatalogueSchema = new Schema(
       required: true,
       default: true,
     },
-    seller: { type: ObjectId, ref: "User" },
+    seller: { type: ObjectId, ref: "Seller" },
   },
   {
     timestamps: true,
