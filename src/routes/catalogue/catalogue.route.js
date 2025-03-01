@@ -8,10 +8,21 @@ import {
   updateCatalogueSkuData,
 } from "../../controllers/catalogue/index.js";
 import { verifyAuth } from "../../middlewares/verify-auth.js";
+import multer from "multer";
 
 const router = Router();
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 router.use(verifyAuth);
+
+router.use(
+  upload.fields([
+    { name: "images", maxCount: 5 },
+    { name: "videos", maxCount: 1 },
+  ])
+);
 
 router.route("/").post(createCatalogue).get(getCatalogues);
 

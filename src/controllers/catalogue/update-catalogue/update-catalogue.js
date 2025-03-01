@@ -1,5 +1,6 @@
 import { Catalogue } from "../../../models/catalogue/catalogue.model.js";
 import { uploadToS3, deleteFromS3 } from "../../../s3/s3.js";
+import { generateShortId } from "../../../utils/generate-short-id.js";
 
 const updateCatalogue = async (req, res) => {
   try {
@@ -74,11 +75,21 @@ const updateCatalogue = async (req, res) => {
       }
     }
 
+    /************************** For New SKus Added ( Then add shortId field to them) *************************************************** */
+
+    const customer_skus = catalogue_data?.customer_skus?.map((skuData) => {
+      if (!skuData?.short_id)
+        // when new sku added
+        return { ...skuData, short_id: generateShortId(8) };
+      return skuData;
+    });
+
     await Catalogue.updateOne(
       { _id: catalogueId },
       {
         $set: {
           ...catalogue_data,
+          customer_skus,
           ...((all_images?.length > 0 || delete_media?.images?.length > 0) && {
             "media.images": finalImages,
           }),

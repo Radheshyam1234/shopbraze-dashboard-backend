@@ -59,14 +59,7 @@ import sellersRouter from "./routes/admin-routes/sellers/sellers.route.js";
 app.use("/api/pincode", pincodeRouter);
 
 app.use("/api/user", userRouter);
-app.use(
-  "/api/catalogues",
-  upload.fields([
-    { name: "images", maxCount: 5 },
-    { name: "videos", maxCount: 1 },
-  ]),
-  catalogueRouter
-);
+app.use("/api/catalogues", catalogueRouter);
 app.use("/api/collections", collectionRouter);
 app.use("/api/bulk-upload", upload.single("file"), bulkUploadRouter);
 app.use("/api/reports", reportsRouter);

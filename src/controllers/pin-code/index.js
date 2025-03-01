@@ -1,3 +1,3 @@
-import { getLocationByPinCode } from "./get-location/get-location.js";
+import { getLocationByPinCode } from "./get-address/get-address.js";
 
 export { getLocationByPinCode };
