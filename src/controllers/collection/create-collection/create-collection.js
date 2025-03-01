@@ -5,7 +5,7 @@ import { generateShortId } from "../../../utils/generate-short-id.js";
 const createCollection = async (req, res) => {
   try {
     const data = req.body;
-    const short_id = generateShortId(8);
+    const short_id = generateShortId(10);
     const new_collection = await Collection.create({
       ...data,
       name: data?.name?.toUpperCase(),

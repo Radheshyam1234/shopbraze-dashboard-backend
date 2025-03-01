@@ -20,7 +20,7 @@ const WebsitePageSchema = new Schema(
     is_active: {
       type: Boolean,
     },
-    product_types: [{ type: String }],
+
     social_links: [{ type: String }],
 
     is_paginated: {

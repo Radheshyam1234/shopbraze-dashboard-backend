@@ -12,7 +12,7 @@ const createCollectionsInBulk = async (req, res) => {
     const csvString = req?.file?.buffer?.toString("utf-8");
     const jsonArray = await csvtojson().fromString(csvString);
 
-    const short_id = generateShortId(8);
+    const short_id = generateShortId(10);
     const new_collection = await Collection.create({
       name: collection_name?.toUpperCase(),
       short_id,

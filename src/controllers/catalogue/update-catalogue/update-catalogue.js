@@ -80,7 +80,7 @@ const updateCatalogue = async (req, res) => {
     const customer_skus = catalogue_data?.customer_skus?.map((skuData) => {
       if (!skuData?.short_id)
         // when new sku added
-        return { ...skuData, short_id: generateShortId(8) };
+        return { ...skuData, short_id: generateShortId(10) };
       return skuData;
     });
 
