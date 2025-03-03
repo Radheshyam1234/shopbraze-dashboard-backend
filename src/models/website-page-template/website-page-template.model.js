@@ -3,109 +3,89 @@ const { ObjectId } = mongoose.Schema.Types;
 
 const WebsitePageTemplateSchema = new Schema(
   {
-    short_id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    type: {
-      type: String,
-      required: true,
-    },
-    sub_type: {
-      type: String,
-      required: true,
-    },
     title: {
       type: String,
       required: true,
     },
-    layout: {
+    description: {
+      type: String,
+    },
+    short_id: {
       type: String,
       required: true,
     },
-    product_group: {
-      type: {
-        type: String,
-      },
-      products_data: {
-        type: Array,
-        default: [],
-      },
+    type: {
+      type: String,
+      required: true,
+      enum: [
+        "banner",
+        "category_group",
+        "product_group",
+        "category_tabbed",
+        "testimonial",
+      ],
     },
-    tagged_entity: {
-      type: {
-        type: String,
-      },
+    sub_type: {
+      type: String,
+      enum: [
+        "new_arrivals",
+        "best_sellers",
+        "all_products",
+        "curated",
+        "recently_viewed",
+      ],
     },
-    banner_cross_link: {
-      type: Array,
-      default: [],
+    is_visible: {
+      type: Boolean,
+      default: true,
+    },
+    layout: {
+      type: String,
+      enum: ["grid", "carousel"],
     },
     custom_style: {
       title_alignment: {
         type: String,
       },
-      background_color: {
-        type: String,
-      },
-      is_background_image_repeat: {
-        type: Boolean,
-      },
-    },
-    gcs_background_image: {
-      type: String,
-    },
-    is_visible: {
-      type: Boolean,
-    },
-    is_active: {
-      type: Boolean,
-    },
-    customisation_options: {
-      type: Array,
-      default: [],
+      _id: false,
     },
     template_settings: {
-      sales_for_same_product: {
-        type: Boolean,
-        default: false,
-      },
-      aov_enabled: {
-        type: Boolean,
-        default: false,
-      },
-      is_mandatory: {
-        type: Boolean,
-        default: false,
-      },
-      sort_by: {
-        type: String,
-      },
-      product_sort_type: {
-        type: String,
-      },
-      filter_by: {
-        type: String,
-        default: "default",
-      },
-      mobile_view_row_count: {
-        type: Number,
-        default: 2,
-      },
-      desktop_view_row_count: {
-        type: Number,
-        default: 1,
-      },
+      sort_by: { type: String },
+      autoplay: { type: Boolean },
+      mobileview_rowcount: { type: Number },
+      desktopview_rowcount: { type: Number },
+      filter_by: { type: String },
+      _id: false,
     },
-    pending_media_upload: {
-      type: Object,
-      default: {},
+
+    banner_data: [
+      {
+        link: { type: String },
+        img_url: { type: String },
+        _id: false,
+      },
+    ],
+    category_group_data: [
+      {
+        name: { type: String },
+        img_url: { type: String },
+        link: { type: String },
+        _id: false,
+      },
+    ],
+    category_tabbed_data: [
+      {
+        name: { type: String },
+        collection_short_id: { type: String },
+        _id: false,
+      },
+    ],
+    product_group_data: {
+      collection_short_id: { type: String },
+      _id: false,
     },
-    seller: {
-      type: ObjectId,
-      ref: "Seller",
-    },
+
+    seller: { type: ObjectId, ref: "Seller", required: true },
   },
   {
     timestamps: true,

@@ -53,6 +53,7 @@ import bulkUploadRouter from "./routes/bulk-upload/bulk-upload.js";
 import reportsRouter from "./routes/reports/reports.route.js";
 import websitePageConfigRouter from "./routes/website-page-config/website-page-config.js";
 import websitePagesRouter from "./routes/website-page/website-page.route.js";
+import websitePageTemplateRouter from "./routes/website-page-template/website-page-template.route.js";
 
 import sellersRouter from "./routes/admin-routes/sellers/sellers.route.js";
 
@@ -66,6 +67,7 @@ app.use("/api/bulk-upload", upload.single("file"), bulkUploadRouter);
 app.use("/api/reports", reportsRouter);
 app.use("/api/website-page-config", websitePageConfigRouter);
 app.use("/api/website-pages", websitePagesRouter);
+app.use("/api/website-page-template", websitePageTemplateRouter);
 
 // For Admin Services
 
