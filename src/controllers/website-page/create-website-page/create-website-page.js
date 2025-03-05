@@ -7,7 +7,7 @@ const createWebsitePage = async (req, res) => {
     const createdPage = await WebsitePage.create({
       ...data,
       short_id: generateShortId(10),
-      // seller:req?.seller?._id
+      seller: req?.seller?._id,
     });
 
     res

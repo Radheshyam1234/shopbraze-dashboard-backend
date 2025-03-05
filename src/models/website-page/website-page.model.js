@@ -26,7 +26,7 @@ const WebsitePageSchema = new Schema(
     is_paginated: {
       type: Boolean,
     },
-    seller: { type: ObjectId, ref: "Seller" },
+    seller: { type: ObjectId, ref: "Seller", required: true },
   },
   {
     timestamps: true,

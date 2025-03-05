@@ -37,7 +37,7 @@ const WebsitePageTemplateSchema = new Schema(
     },
     is_visible: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     layout: {
       type: String,
