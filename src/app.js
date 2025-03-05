@@ -44,29 +44,30 @@ app.get("/", (req, res) => {
 });
 
 //routes import
+import pincodeRouter from "./routes/pin-code/pin-code.route.js";
+
 import userRouter from "./routes/user/user.route.js";
 import catalogueRouter from "./routes/catalogue/catalogue.route.js";
 import collectionRouter from "./routes/collection/collection.route.js";
 import bulkUploadRouter from "./routes/bulk-upload/bulk-upload.js";
 import reportsRouter from "./routes/reports/reports.route.js";
 import websitePageConfigRouter from "./routes/website-page-config/website-page-config.js";
+import websitePagesRouter from "./routes/website-page/website-page.route.js";
+import websitePageTemplateRouter from "./routes/website-page-template/website-page-template.route.js";
 
 import sellersRouter from "./routes/admin-routes/sellers/sellers.route.js";
 
 //routes declaration
+app.use("/api/pincode", pincodeRouter);
+
 app.use("/api/user", userRouter);
-app.use(
-  "/api/catalogues",
-  upload.fields([
-    { name: "images", maxCount: 5 },
-    { name: "videos", maxCount: 1 },
-  ]),
-  catalogueRouter
-);
+app.use("/api/catalogues", catalogueRouter);
 app.use("/api/collections", collectionRouter);
 app.use("/api/bulk-upload", upload.single("file"), bulkUploadRouter);
 app.use("/api/reports", reportsRouter);
-app.use("/api/website-page", websitePageConfigRouter);
+app.use("/api/website-page-config", websitePageConfigRouter);
+app.use("/api/website-pages", websitePagesRouter);
+app.use("/api/website-page-template", websitePageTemplateRouter);
 
 // For Admin Services
 

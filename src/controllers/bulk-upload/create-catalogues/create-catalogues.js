@@ -162,7 +162,7 @@ const createCataloguesInBulk = async (req, res) => {
       // Format SKU Data
       let skuData = {
         size: item["Size"].trim(),
-        short_id: generateShortId(8),
+        short_id: generateShortId(10),
         sku_id: sku_id,
         length,
         breadth,
@@ -191,7 +191,7 @@ const createCataloguesInBulk = async (req, res) => {
 
         groupedProducts[productCode] = {
           product_code: productCode,
-          product_short_id: generateShortId(8),
+          product_short_id: generateShortId(10),
           title: item["Name"].trim() || null,
           description: item["Description"].trim() || null,
           product_type: item["Product Type"].trim() || null,

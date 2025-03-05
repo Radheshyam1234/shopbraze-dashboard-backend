@@ -11,9 +11,9 @@ const createCatalogue = async (req, res) => {
     let catalogueData = JSON.parse(req.body.catalogue_data);
     const updatedSkuData = catalogueData?.customer_skus.map((item) => ({
       ...item,
-      short_id: generateShortId(8),
+      short_id: generateShortId(10),
     }));
-    const product_short_id = generateShortId(8);
+    const product_short_id = generateShortId(10);
     catalogueData = {
       ...catalogueData,
       product_short_id,

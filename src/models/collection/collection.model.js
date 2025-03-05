@@ -25,7 +25,7 @@ const CollectionSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    seller: { type: ObjectId, ref: "User" },
+    seller: { type: ObjectId, ref: "Seller" },
   },
   {
     timestamps: true,
