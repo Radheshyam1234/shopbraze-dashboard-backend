@@ -13,7 +13,7 @@ const getTemplatesInPage = async (req, res) => {
         "featured_page",
       ].includes(page_type)
     )
-      res.status(500).json({ error: "Invalid page type" });
+      return res.status(500).json({ error: "Invalid page type" });
 
     const pageInfo = await WebsitePage.findOne({ short_id: pageId });
     if (!pageInfo) res.status(500).json({ error: "Page not found" });

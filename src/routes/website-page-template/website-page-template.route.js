@@ -2,8 +2,10 @@ import { Router } from "express";
 import { verifyAuth } from "../../middlewares/verify-auth.js";
 import {
   createTemplate,
+  deleteTemplate,
   getTemplatesInPage,
   reorderTemplatesInPage,
+  toggleTemplateVisibility,
 } from "../../controllers/website-page-template/index.js";
 import multer from "multer";
 
@@ -17,5 +19,7 @@ router.use(verifyAuth);
 router.route("/").post(upload.array("images", 20), createTemplate);
 router.route("/templates-in-page/:pageId").get(getTemplatesInPage);
 router.route("/reorder-templates").post(reorderTemplatesInPage);
+router.route("/toggle-visibility/:templateId").put(toggleTemplateVisibility);
+router.route("/:templateId").delete(deleteTemplate);
 
 export default router;

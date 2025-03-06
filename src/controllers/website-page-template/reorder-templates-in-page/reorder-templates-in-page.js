@@ -4,14 +4,18 @@ const reorderTemplatesInPage = async (req, res) => {
   try {
     const { page_id, template_ids } = req?.body;
 
-    const pageInfo = await WebsitePage.findOne({ short_id: page_id });
+    if (!page_id || !Array.isArray(template_ids)) {
+      return res.status(400).json({ error: "Invalid input data" });
+    }
 
-    if (!pageInfo) res.status(500).json({ error: " Invalid Request" });
-
-    await WebsitePage.findOneAndUpdate(
+    const updatedPageInfo = await WebsitePage.findOneAndUpdate(
       { short_id: page_id },
-      { $set: { template_short_ids: template_ids } }
+      { $set: { template_short_ids: template_ids } },
+      { new: true }
     );
+
+    if (!updatedPageInfo)
+      return res.status(404).json({ error: "Invalid request" });
 
     res.status(200).json({ message: "Saved Successfully" });
   } catch (error) {
