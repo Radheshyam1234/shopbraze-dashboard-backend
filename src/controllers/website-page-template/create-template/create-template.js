@@ -19,10 +19,12 @@ const createTemplate = async (req, res) => {
         "testimonial",
       ].includes(type)
     )
-      res.status(500).json({ error: "Please enter a valid template type" });
+      return res
+        .status(404)
+        .json({ error: "Please enter a valid template type" });
 
     const page = await WebsitePage.find({ short_id: page_id });
-    if (!page) res.status(500).json({ error: "Not a valid page" });
+    if (!page) return res.status(500).json({ error: "Not a valid page" });
 
     switch (type) {
       case "banner":
@@ -30,6 +32,9 @@ const createTemplate = async (req, res) => {
         break;
       case "category_group":
         handleCategoryGroupTemplate(templateData, req, res);
+        break;
+      case "product_group":
+        handleProductGroupTemplate(templateData, req, res);
         break;
     }
   } catch (error) {
@@ -151,6 +156,43 @@ const handleCategoryGroupTemplate = async (templateData, req, res) => {
       }
     );
     res.status(200).json({ data: updatedTemplate });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error?.message });
+  }
+};
+
+const handleProductGroupTemplate = async (templateData, req, res) => {
+  try {
+    const {
+      title,
+      description,
+      layout,
+      sub_type,
+      collection_short_id,
+      custom_style,
+    } = templateData;
+    const page_id = req?.body?.page_id;
+
+    const createdTemplate = await WebsitePageTemplate.create({
+      type: "product_group",
+      short_id: generateShortId(10),
+      title,
+      description,
+      sub_type,
+      layout,
+      custom_style,
+      product_group_data: { collection_short_id },
+      seller: req?.seller?._id,
+    });
+
+    await WebsitePage.findOneAndUpdate(
+      { short_id: page_id },
+      {
+        $addToSet: { template_short_ids: createdTemplate.short_id },
+      }
+    );
+    res.status(200).json({ data: createdTemplate });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error?.message });
