@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { verifyAuth } from "../../middlewares/verify-auth.js";
 import {
+  copyTemplate,
   createTemplate,
   deleteTemplate,
   getTemplatesInPage,
@@ -21,5 +22,6 @@ router.route("/templates-in-page/:pageId").get(getTemplatesInPage);
 router.route("/reorder-templates").post(reorderTemplatesInPage);
 router.route("/toggle-visibility/:templateId").put(toggleTemplateVisibility);
 router.route("/:templateId").delete(deleteTemplate);
+router.route("/copy-template/:templateId/:pageId").post(copyTemplate);
 
 export default router;

@@ -36,6 +36,9 @@ const createTemplate = async (req, res) => {
       case "product_group":
         handleProductGroupTemplate(templateData, req, res);
         break;
+      case "category_tabbed":
+        handleTabbedCategoryTemplate(templateData, req, res);
+        break;
     }
   } catch (error) {
     console.log(error);
@@ -183,6 +186,36 @@ const handleProductGroupTemplate = async (templateData, req, res) => {
       layout,
       custom_style,
       product_group_data: { collection_short_id },
+      seller: req?.seller?._id,
+    });
+
+    await WebsitePage.findOneAndUpdate(
+      { short_id: page_id },
+      {
+        $addToSet: { template_short_ids: createdTemplate.short_id },
+      }
+    );
+    res.status(200).json({ data: createdTemplate });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error?.message });
+  }
+};
+
+const handleTabbedCategoryTemplate = async (templateData, req, res) => {
+  try {
+    const { title, description, categoryTabbedItems, custom_style } =
+      templateData;
+    const page_id = req?.body?.page_id;
+
+    const createdTemplate = await WebsitePageTemplate.create({
+      type: "category_tabbed",
+      short_id: generateShortId(10),
+      title,
+      description,
+      layout: "carousel",
+      custom_style,
+      category_tabbed_data: categoryTabbedItems,
       seller: req?.seller?._id,
     });
 
