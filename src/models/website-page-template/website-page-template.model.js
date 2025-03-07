@@ -69,7 +69,7 @@ const WebsitePageTemplateSchema = new Schema(
       {
         name: { type: String },
         img_url: { type: String },
-        link: { type: String },
+        collection_short_id: { type: String },
         _id: false,
       },
     ],
