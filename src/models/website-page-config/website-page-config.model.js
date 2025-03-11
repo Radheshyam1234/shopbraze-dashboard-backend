@@ -316,7 +316,7 @@ const WebsitePageConfigSchema = new Schema(
     instagram_url: {
       type: String,
     },
-    seller: { type: ObjectId, ref: "User" },
+    seller: { type: ObjectId, ref: "Seller", required: true },
   },
   {
     timestamps: true,
