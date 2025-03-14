@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Catalogue } from "../models/catalogue/catalogue.model.js";
+import { Catalogue } from "../../models/catalogue/catalogue.model.js";
 
 const connectDB = async () => {
   try {

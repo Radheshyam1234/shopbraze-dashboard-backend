@@ -19,8 +19,8 @@ router.use(verifyAuth);
 
 router.use(
   upload.fields([
-    { name: "images", maxCount: 5 },
-    { name: "videos", maxCount: 1 },
+    { name: "images", maxCount: 10 },
+    { name: "videos", maxCount: 2 },
   ])
 );
 

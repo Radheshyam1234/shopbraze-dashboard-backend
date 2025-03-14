@@ -6,29 +6,47 @@ import { Catalogue } from "../../../models/catalogue/catalogue.model.js";
 import { BulkUploadReport } from "../../../models/reports/reports.model.js";
 import { generateShortId } from "../../../utils/generate-short-id.js";
 import moment from "moment";
+import { createCatalogueImageUploadQueue } from "../../../queues-and-worker/queues/create-catalogue-queue.js";
 
-const uploadImagesToS3AndUpdateDB = async (products, req) => {
-  for (const product of products) {
-    let updatedImages = [];
+// const uploadImagesToS3AndUpdateDB = async (products, req) => {
+//   try {
+//     await Promise.all(
+//       products.map(async (product) => {
+//         const uploadPromises = product?.media?.images?.map(async (image) => {
+//           try {
+//             const key = `${req?.seller?._id}/product-images/${product?.title}-${
+//               product.product_short_id
+//             }-${nanoid(10)}`;
+//             const uploadResult = await uploadUrlToS3({
+//               fileUrl: image.url,
+//               key,
+//             });
+//             return { url: uploadResult.url, index: image.index }; // Successfully uploaded image
+//           } catch (error) {
+//             console.error(`❌ Failed to upload image: ${image.url}`, error);
+//             return { url: image.url, index: image.index }; // Retaining original image URL on failure
+//           }
+//         });
 
-    for (const image of product.media.images) {
-      try {
-        const key = `${req.seller._id}/product-images/${product.title}-${
-          product.product_short_id
-        }-${nanoid(10)}`;
-        const uploadResult = await uploadUrlToS3({ fileUrl: image.url, key });
-        updatedImages.push({ url: uploadResult.url, index: image.index });
-      } catch (error) {
-        console.error(`Failed to upload image: ${image.url}`, error);
-        updatedImages.push(image);
-      }
-    }
-    await Catalogue.updateOne(
-      { _id: product._id },
-      { $set: { "media.images": updatedImages } }
-    );
-  }
-};
+//         const updatedImages = await Promise.all(uploadPromises);
+
+//         return {
+//           filter: { _id: product._id },
+//           update: { $set: { "media.images": updatedImages } },
+//         };
+//       })
+//     ).then(async (updates) => {
+//       await Catalogue.bulkWrite(
+//         updates.map(({ filter, update }) => ({
+//           updateOne: { filter, update },
+//         }))
+//       );
+//       console.log("✅ All images processed & DB updated!");
+//     });
+//   } catch (error) {
+//     console.error("❌ Error in batch image upload:", error);
+//   }
+// };
 
 const createCataloguesInBulk = async (req, res) => {
   try {
@@ -329,8 +347,15 @@ const createCataloguesInBulk = async (req, res) => {
       seller: req.seller._id,
     });
 
-    return res.status(200).json({
+    res.status(200).json({
       message: "CSV processed successfully",
+    });
+
+    // uploadImagesToS3AndUpdateDB(insertedData, req);
+    // Add the job to the queue (without storing images in Redis)
+    await createCatalogueImageUploadQueue.add("uploadImages", {
+      products: insertedData,
+      sellerId: req.seller._id,
     });
   } catch (error) {
     console.log(error);

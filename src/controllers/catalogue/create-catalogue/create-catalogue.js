@@ -1,4 +1,5 @@
 import { Catalogue } from "../../../models/catalogue/catalogue.model.js";
+import { createCatalogueImageUploadQueue } from "../../../queues-and-worker/queues/create-catalogue-queue.js";
 import { uploadToS3, deleteFromS3 } from "../../../s3/s3.js";
 import { generateShortId } from "../../../utils/generate-short-id.js";
 
@@ -54,6 +55,7 @@ const createCatalogue = async (req, res) => {
 
     catalogue.media.images = uploadedImages;
     catalogue.media.videos = uploadedVideos;
+
     await catalogue.save();
 
     if (catalogue)
