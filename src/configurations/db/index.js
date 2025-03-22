@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 import { Catalogue } from "../../models/catalogue/catalogue.model.js";
 
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const connectDB = async () => {
   try {
     const connectionInstance = await mongoose.connect(
@@ -17,4 +21,13 @@ const connectDB = async () => {
   }
 };
 
-export default connectDB;
+const disconnectDB = async () => {
+  try {
+    await mongoose.connection.close();
+    console.log("🔌 MongoDB Disconnected Successfully!");
+  } catch (error) {
+    console.error("❌ Error disconnecting MongoDB:", error.message);
+  }
+};
+
+export { connectDB, disconnectDB };
