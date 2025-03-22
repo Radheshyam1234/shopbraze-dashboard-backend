@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import { app } from "./app.js";
 import { connectRedis } from "./configurations/redis/index.js";
-import connectDB from "./configurations/db/index.js";
+import { connectDB } from "./configurations/db/index.js";
 
 import "./queues-and-worker/workers/index.js";
 

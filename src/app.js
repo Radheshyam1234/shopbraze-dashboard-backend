@@ -54,6 +54,7 @@ import reportsRouter from "./routes/reports/reports.route.js";
 import websitePageConfigRouter from "./routes/website-page-config/website-page-config.js";
 import websitePagesRouter from "./routes/website-page/website-page.route.js";
 import websitePageTemplateRouter from "./routes/website-page-template/website-page-template.route.js";
+import couponRouter from "./routes/coupon/coupon.route.js";
 
 import sellersRouter from "./routes/admin-routes/sellers/sellers.route.js";
 
@@ -68,6 +69,7 @@ app.use("/api/reports", reportsRouter);
 app.use("/api/website-page-config", websitePageConfigRouter);
 app.use("/api/website-pages", websitePagesRouter);
 app.use("/api/website-page-template", websitePageTemplateRouter);
+app.use("/api/coupons", couponRouter);
 
 // For Admin Services
 
