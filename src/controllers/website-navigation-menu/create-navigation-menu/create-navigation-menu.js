@@ -1,7 +1,7 @@
 import { WebsiteNavigationMenu } from "../../../models/website-navigation-menu/website-navigation-menu.js";
 import { generateShortId } from "../../../utils/generate-short-id.js";
 
-const createNavigationMenu = async (req, res) => {
+const createNavigationMenuItem = async (req, res) => {
   try {
     const { data } = req?.body;
 
@@ -39,4 +39,4 @@ const createNavigationMenu = async (req, res) => {
   }
 };
 
-export { createNavigationMenu };
+export { createNavigationMenuItem };
