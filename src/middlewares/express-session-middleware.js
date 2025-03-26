@@ -29,7 +29,7 @@ const sessionMiddleware = session({
     /*--------For Local-------*/
     // secure: false,
     // sameSite: "Strict",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    // maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   },
   genid: function () {
     return crypto.randomBytes(64).toString("hex"); // Generate a raw session ID

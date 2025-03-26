@@ -28,12 +28,12 @@ const verifyAuth = async (req, res, next) => {
     const requestIP = req.ip || req.connection.remoteAddress;
     const requestUserAgent = req.headers["user-agent"];
 
-    if (
-      sessionData?.user?.ip !== requestIP
-      // || sessionData?.user?.userAgent !== requestUserAgent
-    ) {
-      return res.status(401).json({ message: "Session hijacking detected" });
-    }
+    // if (
+    //   sessionData?.user?.ip !== requestIP
+    //   || sessionData?.user?.userAgent !== requestUserAgent
+    // ) {
+    //   return res.status(401).json({ message: "Session hijacking detected" });
+    // }
 
     // If Admin is trying to get data on behalf of seller
     const viewAsSellerId = req.headers["x-view-as"];
@@ -51,7 +51,6 @@ const verifyAuth = async (req, res, next) => {
           _id: viewAsSellerId,
         });
         req.seller = seller;
-        console.log({ seller });
       }
     } else if (sessionData?.user?.type === "seller") {
       const seller = await Seller.findOne({
