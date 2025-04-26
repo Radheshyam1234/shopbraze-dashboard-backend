@@ -89,10 +89,10 @@ const getPendingOrders = async (req, res) => {
 
       {
         $lookup: {
-          from: "sellers", // The collection to look up (sellers)
-          localField: "seller", // The field in the current document (orders) that contains the seller's _id
-          foreignField: "_id", // The field in the sellers collection that contains the seller's _id
-          as: "seller_data", // Alias for the resulting seller data
+          from: "sellers",
+          localField: "seller",
+          foreignField: "_id",
+          as: "seller_data",
         },
       },
       {
