@@ -19,17 +19,8 @@ const sessionMiddleware = session({
   store: sessionStore,
   cookie: {
     httpOnly: true,
-    // secure: process.env.NODE_ENV === "production" ? true : false,
-    // sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
-
-    // /*------ For Vercel------*/
-    secure: true,
-    sameSite: "None",
-
-    /*--------For Local-------*/
-    // secure: false,
-    // sameSite: "Strict",
-    // maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    secure: process.env.NODE_ENV === "production" ? true : false,
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
   },
   genid: function () {
     return crypto.randomBytes(64).toString("hex"); // Generate a raw session ID
