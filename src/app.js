@@ -48,6 +48,7 @@ import pincodeRouter from "./routes/pin-code/pin-code.route.js";
 
 import userRouter from "./routes/user/user.route.js";
 import catalogueRouter from "./routes/catalogue/catalogue.route.js";
+import sizeChartRouter from "./routes/size-chart/size-chart.route.js";
 import collectionRouter from "./routes/collection/collection.route.js";
 import bulkUploadRouter from "./routes/bulk-upload/bulk-upload.js";
 import reportsRouter from "./routes/reports/reports.route.js";
@@ -65,6 +66,7 @@ app.use("/api/pincode", pincodeRouter);
 
 app.use("/api/user", userRouter);
 app.use("/api/catalogues", catalogueRouter);
+app.use("/api/size-charts", sizeChartRouter);
 app.use("/api/collections", collectionRouter);
 app.use("/api/bulk-upload", upload.single("file"), bulkUploadRouter);
 app.use("/api/reports", reportsRouter);

@@ -126,6 +126,11 @@ const CatalogueSchema = new Schema(
       required: true,
       default: true,
     },
+    size_data_by_unit: {
+      type: Map,
+      of: Schema.Types.Mixed,
+      default: {},
+    },
     seller: { type: ObjectId, ref: "Seller" },
   },
   {

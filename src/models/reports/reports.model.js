@@ -51,7 +51,7 @@ const BulkUploadReportSchema = new Schema(
       required: true,
       enum: ["Admin", "Seller"],
     },
-    seller: { type: ObjectId, ref: "User" },
+    seller: { type: ObjectId, ref: "Seller" },
   },
   { timestamps: true }
 );
