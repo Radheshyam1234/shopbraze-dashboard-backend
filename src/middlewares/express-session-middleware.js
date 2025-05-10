@@ -19,8 +19,10 @@ const sessionMiddleware = session({
   store: sessionStore,
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production" ? true : false,
-    sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
+    // secure: process.env.NODE_ENV === "production" ? true : false,
+    // sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
+    secure: true,
+    sameSite: "None",
   },
   genid: function () {
     return crypto.randomBytes(64).toString("hex"); // Generate a raw session ID
