@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-const { ObjectId } = mongoose.Schema.Types;
+const { ObjectId, Mixed } = mongoose.Schema.Types;
 
 const CustomerSkuSchema = new Schema({
   size: {
@@ -126,11 +126,15 @@ const CatalogueSchema = new Schema(
       required: true,
       default: true,
     },
-    size_data_by_unit: {
-      type: Map,
-      of: Schema.Types.Mixed,
-      default: {},
-    },
+    size_charts: [
+      {
+        size_chart_id: { type: ObjectId, ref: "SizeChart" },
+        data_by_unit: Mixed,
+        updated_at: { type: Date, default: Date.now },
+      },
+    ],
+    active_size_chart_id: { type: ObjectId, ref: "SizeChart" },
+
     seller: { type: ObjectId, ref: "Seller" },
   },
   {

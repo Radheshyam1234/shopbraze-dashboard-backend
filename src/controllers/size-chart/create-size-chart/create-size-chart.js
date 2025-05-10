@@ -40,7 +40,18 @@ const createSizeChart = async (req, res) => {
     const bulkOps = product_short_ids?.map((productShortId) => ({
       updateOne: {
         filter: { product_short_id: productShortId },
-        update: { $set: { size_data_by_unit: data_by_unit } },
+        update: {
+          $push: {
+            size_charts: {
+              size_chart_id: newSizeChart._id,
+              data_by_unit,
+              updated_at: new Date(),
+            },
+          },
+          $set: {
+            active_size_chart_id: newSizeChart._id,
+          },
+        },
       },
     }));
 

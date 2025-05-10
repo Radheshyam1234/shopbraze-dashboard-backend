@@ -2,6 +2,7 @@ import { Router } from "express";
 import { verifyAuth } from "../../middlewares/verify-auth.js";
 import {
   createSizeChart,
+  deleteSizeChart,
   getSizeCharts,
   updateSizeCharts,
 } from "../../controllers/size-chart/index.js";
@@ -22,5 +23,7 @@ router
 router
   .route("/:size_chart_id")
   .put(upload.single("static_type_image"), updateSizeCharts);
+
+router.route("/:size_chart_id").delete(deleteSizeChart);
 
 export default router;

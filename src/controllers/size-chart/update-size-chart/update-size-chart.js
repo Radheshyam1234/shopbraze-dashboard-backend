@@ -7,8 +7,6 @@ const updateSizeCharts = async (req, res) => {
     const imageFile = req.file;
     const parsedData = JSON.parse(req.body.data || "{}");
 
-    console.log(parsedData, "parsedData");
-
     const {
       name,
       type,
@@ -50,13 +48,34 @@ const updateSizeCharts = async (req, res) => {
     const bulkOps = product_short_ids?.map((productShortId) => ({
       updateOne: {
         filter: { product_short_id: productShortId },
-        update: { $set: { size_data_by_unit: data_by_unit } },
+        update: {
+          $pull: {
+            size_charts: { size_chart_id },
+          },
+        },
       },
     }));
 
-    if (bulkOps?.length) {
-      await Catalogue.bulkWrite(bulkOps);
-    }
+    const pushOps = product_short_ids?.map((productShortId) => ({
+      updateOne: {
+        filter: { product_short_id: productShortId },
+        update: {
+          $push: {
+            size_charts: {
+              size_chart_id,
+              data_by_unit,
+              updated_at: new Date(),
+            },
+          },
+          $set: {
+            active_size_chart_id: size_chart_id,
+          },
+        },
+      },
+    }));
+
+    if (bulkOps?.length) await Catalogue.bulkWrite(bulkOps);
+    if (pushOps?.length) await Catalogue.bulkWrite(pushOps);
 
     res.status(200).json({ message: "Size chart updated" });
   } catch (error) {
