@@ -28,6 +28,29 @@ const getCatalogues = async (req, res) => {
   }
 };
 
+const getCataloguesByIds = async (req, res) => {
+  try {
+    let { product_short_ids } = req.query;
+    const product_short_ids_array = product_short_ids?.split(",");
+    if (
+      !Array.isArray(product_short_ids_array) ||
+      product_short_ids_array.length === 0
+    ) {
+      return res
+        .status(400)
+        .json({ error: "product_short_ids must be a non-empty array." });
+    }
+
+    const catalogues = await Catalogue.find({
+      product_short_id: { $in: product_short_ids_array },
+    });
+
+    return res.status(200).json({ data: catalogues });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
 const getCatalogueById = async (req, res) => {
   try {
     const { catalogueId } = req.params;
@@ -38,4 +61,4 @@ const getCatalogueById = async (req, res) => {
   }
 };
 
-export { getCatalogues, getCatalogueById };
+export { getCatalogues, getCatalogueById, getCataloguesByIds };

@@ -4,6 +4,7 @@ import {
   deleteCatalogue,
   getCatalogueById,
   getCatalogues,
+  getCataloguesByIds,
   updateCatalogue,
   updateCatalogueSkuData,
 } from "../../controllers/catalogue/index.js";
@@ -25,6 +26,7 @@ router.use(
 );
 
 router.route("/").post(createCatalogue).get(getCatalogues);
+router.route("/get-by-ids").get(getCataloguesByIds);
 
 router
   .route("/:catalogueId")
