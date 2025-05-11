@@ -58,6 +58,7 @@ import websitePageTemplateRouter from "./routes/website-page-template/website-pa
 import websiteNavigationMenuRouter from "./routes/website-navigation-menu/website-navigation-menu.route.js";
 import couponRouter from "./routes/coupon/coupon.route.js";
 import ordersRouter from "./routes/orders/orders.route.js";
+import ordersProcessingRouter from "./routes/orders-processing/orders-processing.route.js";
 
 import sellersRouter from "./routes/admin-routes/sellers/sellers.route.js";
 
@@ -76,6 +77,7 @@ app.use("/api/website-page-template", websitePageTemplateRouter);
 app.use("/api/website-page-navigation-menu", websiteNavigationMenuRouter);
 app.use("/api/coupons", couponRouter);
 app.use("/api/orders", ordersRouter);
+app.use("/api/process-orders", ordersProcessingRouter);
 
 // For Admin Services
 
