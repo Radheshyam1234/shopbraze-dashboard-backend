@@ -69,6 +69,8 @@ const CouponDetailsSchema = new mongoose.Schema(
 
 const OrderSchema = new mongoose.Schema(
   {
+    order_id: { type: String, unique: true, required: true },
+    source: { type: String, enum: ["buy-now", "cart"], required: true },
     payment_mode: {
       type: String,
       enum: ["cod", "online"],
