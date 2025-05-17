@@ -22,8 +22,8 @@ export const uploadToS3 = async ({ file, key }) => {
   const params = {
     Bucket: BUCKET_NAME,
     Key: key,
-    Body: file.buffer,
-    ContentType: file.mimetype,
+    Body: file?.buffer,
+    ContentType: file?.mimetype,
   };
 
   const command = new PutObjectCommand(params);

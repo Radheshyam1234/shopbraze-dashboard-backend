@@ -1,5 +1,6 @@
 import { Catalogue } from "../../../models/catalogue/catalogue.model.js";
 import { SizeChart } from "../../../models/size-chart/size-chart.model.js";
+import { uploadToS3 } from "../../../s3/s3.js";
 
 const updateSizeCharts = async (req, res) => {
   try {
@@ -16,16 +17,16 @@ const updateSizeCharts = async (req, res) => {
       unit_labels_conversion_factor,
     } = parsedData;
 
-    // let static_type_image_url = "";
-    // if (imageFile) {
-    //   const { url } = await uploadToS3({
-    //     imageFile,
-    //     key: `${req?.seller?._id}/size-charts/size-chart-${Date.now()}-${imageFile.originalname}`,
-    //   });
-    //   static_type_image_url = url;
-    // }
-
-    const static_type_image_url = ""; // Placeholder until image upload is enabled
+    let static_type_image_url = "";
+    if (imageFile) {
+      const { url } = await uploadToS3({
+        file: imageFile,
+        key: `${req?.seller?._id}/size-charts/size-chart-${Date.now()}-${
+          imageFile.originalname
+        }`,
+      });
+      static_type_image_url = url;
+    }
 
     const updatedSizeChart = await SizeChart.findByIdAndUpdate(
       size_chart_id,
