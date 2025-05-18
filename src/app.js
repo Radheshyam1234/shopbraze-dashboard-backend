@@ -59,6 +59,7 @@ import websiteNavigationMenuRouter from "./routes/website-navigation-menu/websit
 import couponRouter from "./routes/coupon/coupon.route.js";
 import ordersRouter from "./routes/orders/orders.route.js";
 import ordersProcessingRouter from "./routes/orders-processing/orders-processing.route.js";
+import testimonialRouter from "./routes/testimonial/testimonial.route.js";
 
 import sellersRouter from "./routes/admin-routes/sellers/sellers.route.js";
 
@@ -78,6 +79,7 @@ app.use("/api/website-page-navigation-menu", websiteNavigationMenuRouter);
 app.use("/api/coupons", couponRouter);
 app.use("/api/orders", ordersRouter);
 app.use("/api/process-orders", ordersProcessingRouter);
+app.use("/api/testimonials", testimonialRouter);
 
 // For Admin Services
 
