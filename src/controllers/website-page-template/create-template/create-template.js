@@ -38,6 +38,7 @@ const createTemplate = async (req, res) => {
         break;
       case "category_tabbed":
         handleTabbedCategoryTemplate(templateData, req, res);
+        break;
       case "testimonial":
         handleTestimonialTemplate(templateData, req, res);
         break;

@@ -7,6 +7,7 @@ import {
   getTemplatesInPage,
   reorderTemplatesInPage,
   toggleTemplateVisibility,
+  updateTemplate,
 } from "../../controllers/website-page-template/index.js";
 import multer from "multer";
 
@@ -18,6 +19,7 @@ const upload = multer({ storage });
 router.use(verifyAuth);
 
 router.route("/").post(upload.array("images", 20), createTemplate);
+router.route("/:template_id").put(upload.array("images", 20), updateTemplate);
 router.route("/templates-in-page/:pageId").get(getTemplatesInPage);
 router.route("/reorder-templates").post(reorderTemplatesInPage);
 router.route("/toggle-visibility/:templateId").put(toggleTemplateVisibility);
