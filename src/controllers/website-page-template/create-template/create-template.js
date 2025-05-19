@@ -38,6 +38,8 @@ const createTemplate = async (req, res) => {
         break;
       case "category_tabbed":
         handleTabbedCategoryTemplate(templateData, req, res);
+      case "testimonial":
+        handleTestimonialTemplate(templateData, req, res);
         break;
     }
   } catch (error) {
@@ -216,6 +218,34 @@ const handleTabbedCategoryTemplate = async (templateData, req, res) => {
       layout: "carousel",
       custom_style,
       category_tabbed_data: categoryTabbedItems,
+      seller: req?.seller?._id,
+    });
+
+    await WebsitePage.findOneAndUpdate(
+      { short_id: page_id },
+      {
+        $addToSet: { template_short_ids: createdTemplate.short_id },
+      }
+    );
+    res.status(200).json({ data: createdTemplate });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error?.message });
+  }
+};
+
+const handleTestimonialTemplate = async (templateData, req, res) => {
+  try {
+    const { title, layout, template_settings, custom_style } = templateData;
+    const page_id = req?.body?.page_id;
+
+    const createdTemplate = await WebsitePageTemplate.create({
+      type: "testimonial",
+      short_id: generateShortId(10),
+      title,
+      layout: layout,
+      custom_style,
+      template_settings,
       seller: req?.seller?._id,
     });
 
