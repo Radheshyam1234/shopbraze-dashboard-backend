@@ -97,6 +97,9 @@ const OrderSchema = new mongoose.Schema(
       },
       address: AddressSchema,
     },
+    order_confirmation: { type: Boolean, default: false },
+    shiprocket_order_id: { type: String },
+    shiprocket_shipment_id: { type: String },
   },
   { timestamps: true }
 );

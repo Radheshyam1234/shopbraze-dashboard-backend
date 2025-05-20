@@ -11,11 +11,14 @@ const getPendingOrders = async (req, res) => {
       // Step 1: Keep only products whose last status is 'pending'
       {
         $project: {
+          order_id: 1,
+          order_confirmation: 1,
           payment_mode: 1,
           customer_details: 1,
           bill_details: 1,
           createdAt: 1,
           seller: 1,
+
           products: {
             $filter: {
               input: "$products",
@@ -114,6 +117,8 @@ const getPendingOrders = async (req, res) => {
       {
         $group: {
           _id: "$_id",
+          order_id: { $first: "$order_id" },
+          order_confirmation: { $first: "$order_confirmation" },
           payment_mode: { $first: "$payment_mode" },
           customer_details: { $first: "$customer_details" },
           bill_details: { $first: "$bill_details" },

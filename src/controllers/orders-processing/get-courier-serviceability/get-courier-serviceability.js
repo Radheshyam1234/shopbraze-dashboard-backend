@@ -15,7 +15,7 @@ const getCourierServiceability = async (req, res) => {
       return res.status(404).json({ error: "Some fileds are missing" });
 
     const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY1NjUxOTMsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzQ3NzUyMDcyLCJqdGkiOiJXOWtVZUcxSlR1TkVHV2pqIiwiaWF0IjoxNzQ2ODg4MDcyLCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTc0Njg4ODA3MiwiY2lkIjo1MjY4MDgzLCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.e0nS03Oqsroxaqi8PJcebr9qtENxj6FC6NsNJNM9LuM";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY1NjUxOTMsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzQ4NTI5ODI4LCJqdGkiOiJqR25tUGJQdDh5bHdBU2ZvIiwiaWF0IjoxNzQ3NjY1ODI4LCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTc0NzY2NTgyOCwiY2lkIjo1MjY4MDgzLCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.YqmM3QBVkWIWA6dMEyxqD43C-MlhZBTr2wSwy0WOeLA";
 
     const response = await axios.get(
       `https://apiv2.shiprocket.in/v1/external/courier/serviceability`,
