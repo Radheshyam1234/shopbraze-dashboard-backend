@@ -18,6 +18,7 @@ const getReadyToShipOrders = async (req, res) => {
           bill_details: 1,
           createdAt: 1,
           seller: 1,
+          shiprocket_order_id: 1,
           shiprocket_shipment_awb_code: 1,
           shiprocket_shipping_courier_name: 1,
           shiprocket_shipment_id: 1,
@@ -132,6 +133,9 @@ const getReadyToShipOrders = async (req, res) => {
           updatedAt: { $first: "$updatedAt" },
           products: { $push: "$products" },
           pickup_address: { $first: "$pickup_address" },
+          shiprocket_order_id: {
+            $first: "$shiprocket_order_id",
+          },
           shiprocket_shipment_awb_code: {
             $first: "$shiprocket_shipment_awb_code",
           },
