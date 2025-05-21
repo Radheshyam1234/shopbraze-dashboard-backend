@@ -29,8 +29,6 @@ const generateAWB = async (req, res) => {
 
       const { awb_code, courier_name } = response?.data?.response?.data;
 
-      console.log(response?.data?.response?.data);
-
       if (awb_code) {
         orderData?.products.forEach((product) => {
           const history = product?.status_history;
