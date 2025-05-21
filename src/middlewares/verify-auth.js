@@ -49,13 +49,13 @@ const verifyAuth = async (req, res, next) => {
       if (viewAsSellerId) {
         const seller = await Seller.findOne({
           _id: viewAsSellerId,
-        });
+        }).select("+shiprocket_token");
         req.seller = seller;
       }
     } else if (sessionData?.user?.type === "seller") {
       const seller = await Seller.findOne({
         contact_number: sessionData.user.contact_number,
-      });
+      }).select("+shiprocket_token");
       req.user_type = "seller";
       req.seller = seller;
     }

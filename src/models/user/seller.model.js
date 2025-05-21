@@ -203,6 +203,11 @@ const SellerSchema = new Schema(
         default: "",
       },
     },
+    shiprocket_token: {
+      type: String,
+      default: "",
+      select: false,
+    },
   },
   {
     timestamps: true,

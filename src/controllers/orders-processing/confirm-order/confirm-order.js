@@ -43,8 +43,6 @@ const confirmOrder = async (req, res) => {
         const payload = {
           order_id: orderData?.order_id,
           order_date: orderData?.createdAt,
-          // pickup_location:
-          //   "Gali No 1 DhoopSingh Nagar Panipat, DhoopSingh Nagar, Panipat, Haryana, India, 132103",
 
           billing_customer_name: orderData?.customer_details?.name,
           billing_last_name: orderData?.customer_details?.name
@@ -96,7 +94,7 @@ const confirmOrder = async (req, res) => {
           payload,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${req?.seller?.shiprocket_token}`,
               "Content-Type": "application/json",
             },
           }
@@ -104,20 +102,22 @@ const confirmOrder = async (req, res) => {
 
         const { order_id: shiprocket_order_id, shipment_id } = response?.data;
 
-        await Order.findOneAndUpdate(
-          { order_id },
-          {
-            $set: {
-              order_confirmation: true,
-              shiprocket_order_id: shiprocket_order_id,
-              shiprocket_shipment_id: shipment_id,
+        if (shiprocket_order_id && shipment_id) {
+          await Order.findOneAndUpdate(
+            { order_id },
+            {
+              $set: {
+                order_confirmation: true,
+                shiprocket_order_id: shiprocket_order_id,
+                shiprocket_shipment_id: shipment_id,
+              },
             },
-          },
-          { new: true }
-        );
-        return res
-          .status(200)
-          .json({ message: "Order confirmed successfully." });
+            { new: true }
+          );
+          return res
+            .status(200)
+            .json({ message: "Order confirmed successfully." });
+        } else return res.status(500).json("Something went wrong");
       } catch (error) {
         console.error(
           "Shiprocket API Error:",

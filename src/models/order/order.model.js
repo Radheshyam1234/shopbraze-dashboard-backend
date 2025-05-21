@@ -11,12 +11,12 @@ const OrderStatusSchema = new mongoose.Schema(
         "pending",
         "ready to ship",
         "pickup pending",
-        "cancelled",
         "intransit",
         "delivered",
         "rto intransit",
         "rto delivered",
         "lost",
+        "cancelled",
       ],
     },
     timestamp: { type: Date, default: Date.now },
@@ -100,6 +100,8 @@ const OrderSchema = new mongoose.Schema(
     order_confirmation: { type: Boolean, default: false },
     shiprocket_order_id: { type: String },
     shiprocket_shipment_id: { type: String },
+    shiprocket_shipment_awb_code: { type: String },
+    shiprocket_shipping_courier_name: { type: String },
   },
   { timestamps: true }
 );

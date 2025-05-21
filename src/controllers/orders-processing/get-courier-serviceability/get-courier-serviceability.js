@@ -14,9 +14,6 @@ const getCourierServiceability = async (req, res) => {
     if (!pickup_postcode || !delivery_postcode || !weight)
       return res.status(404).json({ error: "Some fileds are missing" });
 
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY1NjUxOTMsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzQ4NTI5ODI4LCJqdGkiOiJqR25tUGJQdDh5bHdBU2ZvIiwiaWF0IjoxNzQ3NjY1ODI4LCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTc0NzY2NTgyOCwiY2lkIjo1MjY4MDgzLCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.YqmM3QBVkWIWA6dMEyxqD43C-MlhZBTr2wSwy0WOeLA";
-
     const response = await axios.get(
       `https://apiv2.shiprocket.in/v1/external/courier/serviceability`,
       {
@@ -29,7 +26,7 @@ const getCourierServiceability = async (req, res) => {
           ...(recommended_val && { recommended_val }),
         },
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${req?.seller?.shiprocket_token}`,
         },
       }
     );
