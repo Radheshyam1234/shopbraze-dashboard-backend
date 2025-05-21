@@ -5,6 +5,7 @@ import { getFuturePickupDates } from "./get-future-pickup-dates/get-future-picku
 import { generateLabel } from "./generate-labels-and-shipment/generate-labels-and-shipment.js";
 import { generateInvoice } from "./generate-labels-and-shipment/generate-labels-and-shipment.js";
 import { cancelShipment } from "./cancel-order-and-shipment/cancel-order-and-shipment.js";
+import { cancelOrder } from "./cancel-order-and-shipment/cancel-order-and-shipment.js";
 
 export {
   getCourierServiceability,
@@ -14,4 +15,5 @@ export {
   generateLabel,
   generateInvoice,
   cancelShipment,
+  cancelOrder,
 };

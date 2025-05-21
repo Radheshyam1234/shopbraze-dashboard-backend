@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { verifyAuth } from "../../middlewares/verify-auth.js";
 import {
+  cancelOrder,
   cancelShipment,
   confirmOrder,
   generateAWB,
@@ -22,5 +23,6 @@ router.route("/pickup-dates").get(getFuturePickupDates);
 router.route("/generate-label").post(generateLabel);
 router.route("/generate-invoice").post(generateInvoice);
 router.route("/cancel-shipment").post(cancelShipment);
+router.route("/cancel-order").post(cancelOrder);
 
 export default router;
