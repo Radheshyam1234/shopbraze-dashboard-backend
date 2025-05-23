@@ -3,6 +3,30 @@ const { ObjectId, Mixed } = mongoose.Schema.Types;
 
 const WebsitePageConfigSchema = new Schema(
   {
+    name: {
+      type: String,
+    },
+    description: {
+      type: String,
+    },
+    logo: {
+      type: String,
+    },
+    favicon: {
+      type: String,
+    },
+    facebook_url: {
+      type: String,
+    },
+    instagram_url: {
+      type: String,
+    },
+    customer_support_number: {
+      type: String,
+    },
+    whatsapp_number: {
+      type: String,
+    },
     customer_support_time: {
       is_24_7_available: {
         type: Boolean,
@@ -41,6 +65,15 @@ const WebsitePageConfigSchema = new Schema(
       loop_count: {
         type: Number,
       },
+    },
+    add_to_bag: {
+      type: Boolean,
+    },
+    capture_website_metrics: {
+      type: Boolean,
+    },
+    lowest_price_tag: {
+      type: Boolean,
     },
     ui_settings: {
       custom_loader: {
@@ -110,10 +143,7 @@ const WebsitePageConfigSchema = new Schema(
       external_checkout: {
         type: Mixed,
       },
-      show_order_cancel: {
-        type: Boolean,
-      },
-      auto_scroll_banner_cross_link: {
+      auto_scroll_banner: {
         type: Boolean,
       },
       auto_scroll_product_card: {
@@ -127,6 +157,7 @@ const WebsitePageConfigSchema = new Schema(
       },
       product_card_layout: {
         type: String,
+        enum: ["portrait", "square"],
       },
       show_cod_charges_toast: {
         type: Boolean,
@@ -143,6 +174,9 @@ const WebsitePageConfigSchema = new Schema(
       show_ratings_on_product_page: {
         type: Boolean,
       },
+      show_order_cancel: {
+        type: Boolean,
+      },
       show_swipe_up_screen: {
         type: Boolean,
       },
@@ -154,9 +188,14 @@ const WebsitePageConfigSchema = new Schema(
       },
       image_fit: {
         type: String,
+        enum: ["contain", "cover"],
       },
       header_logo_size: {
         type: String,
+        enum: ["original", "small", "medium", "large"],
+      },
+      size_confirmation: {
+        type: Boolean,
       },
     },
     whatsapp_connect: {
@@ -226,20 +265,6 @@ const WebsitePageConfigSchema = new Schema(
         type: Number,
       },
     },
-    feature_settings: {
-      add_to_bag: {
-        type: Boolean,
-      },
-      capture_website_metrics: {
-        type: Boolean,
-      },
-      lowest_price_tag: {
-        type: Boolean,
-      },
-      size_confirmation: {
-        type: Boolean,
-      },
-    },
     app_announcement: {
       open_in_app_badge: {
         type: Boolean,
@@ -267,24 +292,7 @@ const WebsitePageConfigSchema = new Schema(
     cover_photo: {
       type: String,
     },
-    customer_support_number: {
-      type: String,
-    },
     default_payment_mode: {
-      type: String,
-    },
-    description: {
-      type: String,
-    },
-    images: [
-      {
-        type: String,
-      },
-    ],
-    logo: {
-      type: String,
-    },
-    name: {
       type: String,
     },
     product_quality_trust_markers: [
@@ -304,18 +312,53 @@ const WebsitePageConfigSchema = new Schema(
     web_otf_enabled: {
       type: Boolean,
     },
-    favicon: {
-      type: String,
-    },
     google_search_verification_code: {
       type: String,
     },
-    facebook_url: {
-      type: String,
+    policies: {
+      _id: false,
+      use_default_privacy_policy: {
+        type: Boolean,
+        default: true,
+      },
+      use_default_return_policy: {
+        type: Boolean,
+        default: true,
+      },
+      use_default_terms_and_conditions: {
+        type: Boolean,
+        default: true,
+      },
+      use_default_shipping_policy: {
+        type: Boolean,
+        default: true,
+      },
+      use_default_about_us: {
+        type: Boolean,
+        default: true,
+      },
+      policies_text_obj: {
+        _id: false,
+        privacy_policy_text: {
+          type: String,
+          default: "",
+        },
+        return_policy_text: {
+          type: String,
+          default: "",
+        },
+        terms_and_conditions_text: {
+          type: String,
+          default: "",
+        },
+        shipping_policy_text: {
+          type: String,
+          default: "",
+        },
+        about_us_text: { type: String, default: "" },
+      },
     },
-    instagram_url: {
-      type: String,
-    },
+
     seller: { type: ObjectId, ref: "Seller", required: true },
   },
   {
