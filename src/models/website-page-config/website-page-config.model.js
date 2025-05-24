@@ -68,9 +68,11 @@ const WebsitePageConfigSchema = new Schema(
     },
     add_to_bag: {
       type: Boolean,
+      defaukt: true,
     },
     capture_website_metrics: {
       type: Boolean,
+      default: false,
     },
     lowest_price_tag: {
       type: Boolean,
@@ -145,19 +147,23 @@ const WebsitePageConfigSchema = new Schema(
       },
       auto_scroll_banner: {
         type: Boolean,
+        default: true,
       },
       auto_scroll_product_card: {
         type: Boolean,
+        default: true,
       },
       header_logo_type: {
         type: String,
       },
       product_card_add_to_bag: {
         type: Boolean,
+        default: true,
       },
       product_card_layout: {
         type: String,
         enum: ["portrait", "square"],
+        default: "portrait",
       },
       show_cod_charges_toast: {
         type: Boolean,
@@ -176,6 +182,7 @@ const WebsitePageConfigSchema = new Schema(
       },
       show_order_cancel: {
         type: Boolean,
+        default: true,
       },
       show_swipe_up_screen: {
         type: Boolean,
@@ -193,9 +200,11 @@ const WebsitePageConfigSchema = new Schema(
       header_logo_size: {
         type: String,
         enum: ["original", "small", "medium", "large"],
+        default: "medium",
       },
       size_confirmation: {
         type: Boolean,
+        default: true,
       },
     },
     whatsapp_connect: {
