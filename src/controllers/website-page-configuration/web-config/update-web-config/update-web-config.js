@@ -1,5 +1,6 @@
 import { WebsitePageConfig } from "../../../../models/website-page-config/website-page-config.model.js";
 import { uploadToS3 } from "../../../../s3/s3.js";
+import _ from "lodash";
 
 const updateWebConfig = async (req, res) => {
   try {
@@ -33,9 +34,15 @@ const updateWebConfig = async (req, res) => {
       parsedData.favicon = faviconUrl;
     }
 
+    const mergedData = _.merge(
+      {},
+      seller_website_config_data?.toObject?.() || {},
+      parsedData
+    );
+
     const updatedConfig = await WebsitePageConfig.findOneAndUpdate(
       { seller: seller._id },
-      { $set: parsedData },
+      { $set: mergedData },
       { new: true, upsert: true, runValidators: true }
     );
 
